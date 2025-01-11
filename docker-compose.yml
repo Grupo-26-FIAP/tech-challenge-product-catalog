@@ -4,12 +4,12 @@ services:
       context: .
       dockerfile: Dockerfile.local
     ports:
-      - 3000:3000
+      - 3002:3002
     env_file:
       - .env
     environment:
       - NODE_ENV=development
-      - APP_PORT=3000
+      - APP_PORT=3002
       - POSTGRES_HOST=postgres
     depends_on:
       - postgres
@@ -19,7 +19,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=tech-challenge-db
+      - POSTGRES_DB=tech-challenge-product-catalog-db
     ports:
       - 5432:5432
 
@@ -30,4 +30,4 @@ services:
 
 networks:
   default:
-    name: tech-challenge-network
+    name: tech-challenge-product-catalog-network
