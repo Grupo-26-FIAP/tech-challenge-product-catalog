@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { EnvironmentVariableService } from '@Shared/config/environment-variable/environment-variable.service';
+import { EnvironmentVariableService } from 'src/shared/config/environment-variable/environment-variable.service';
 
 export const initializeSwagger = (application: INestApplication): void => {
   const environmentVariableService: EnvironmentVariableService =

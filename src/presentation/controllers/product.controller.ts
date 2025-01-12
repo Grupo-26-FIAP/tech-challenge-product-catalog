@@ -17,7 +17,6 @@ import {
   Post,
   Put,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -26,9 +25,6 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Roles } from '@Shared/decorators/roles.decorator';
-import { UserRoleEnum } from '@Shared/enums/user-role.enum';
-import { RoleGuard } from '@Shared/guards/role-guard';
 
 @Controller('/api/products')
 @ApiTags('Products')
@@ -47,8 +43,6 @@ export class ProductController {
     description: 'Produto criado com sucesso',
     type: ProductResponseDto,
   })
-  @Roles(UserRoleEnum.ADMIN)
-  @UseGuards(RoleGuard)
   @ApiBearerAuth()
   @ApiResponse({ status: 401, description: 'Não autorizado' })
   @ApiResponse({ status: 403, description: 'Acesso proibido' })
@@ -78,8 +72,6 @@ export class ProductController {
   @Delete(':id')
   @HttpCode(204)
   @ApiOperation({ summary: 'Deleta um produto' })
-  @Roles(UserRoleEnum.ADMIN)
-  @UseGuards(RoleGuard)
   @ApiBearerAuth()
   @ApiResponse({ status: 401, description: 'Não autorizado' })
   @ApiResponse({ status: 403, description: 'Acesso proibido' })
@@ -95,8 +87,6 @@ export class ProductController {
   @Put(':id')
   @HttpCode(204)
   @ApiOperation({ summary: 'Atualiza um produto' })
-  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.PREP_LINE)
-  @UseGuards(RoleGuard)
   @ApiBearerAuth()
   @ApiResponse({ status: 401, description: 'Não autorizado' })
   @ApiResponse({ status: 403, description: 'Acesso proibido' })

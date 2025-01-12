@@ -11,7 +11,7 @@ export class PostgresConfigService implements TypeOrmOptionsFactory {
   createTypeOrmOptions(): TypeOrmModuleOptions {
     const postgresEnvs = this.environmentVariableService.postgresConfig;
 
-    return {
+    const typeOrmOptions: TypeOrmModuleOptions = {
       type: 'postgres',
       host: postgresEnvs.host,
       port: postgresEnvs.port,
@@ -20,9 +20,8 @@ export class PostgresConfigService implements TypeOrmOptionsFactory {
       database: postgresEnvs.database,
       synchronize: true,
       autoLoadEntities: true,
-      ssl: {
-        rejectUnauthorized: false,
-      },
     };
+
+    return typeOrmOptions;
   }
 }

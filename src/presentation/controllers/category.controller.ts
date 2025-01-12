@@ -7,7 +7,6 @@ import {
   Param,
   Post,
   Put,
-  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -25,9 +24,6 @@ import { CreateCategoryUseCase } from '@Application/use-cases/category/create-ca
 import { DeleteCategoryUseCase } from '@Application/use-cases/category/delete-category.use-case';
 import { FindCategoryUseCase } from '@Application/use-cases/category/find-category.use-case';
 import { UpdateCategoryUseCase } from '@Application/use-cases/category/update-category.use-case';
-import { Roles } from '@Shared/decorators/roles.decorator';
-import { UserRoleEnum } from '@Shared/enums/user-role.enum';
-import { RoleGuard } from '@Shared/guards/role-guard';
 
 @Controller('/api/categories')
 @ApiTags('Categories')
@@ -46,8 +42,6 @@ export class CategoryController {
     description: 'Categoria criada com sucesso',
     type: CategoryRequestDto,
   })
-  @Roles(UserRoleEnum.ADMIN)
-  @UseGuards(RoleGuard)
   @ApiBearerAuth()
   @ApiResponse({ status: 401, description: 'Não autorizado' })
   @ApiResponse({ status: 403, description: 'Acesso proibido' })
@@ -71,8 +65,6 @@ export class CategoryController {
 
   @Put(':id')
   @HttpCode(204)
-  @Roles(UserRoleEnum.ADMIN)
-  @UseGuards(RoleGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Atualiza uma categoria' })
   @ApiResponse({ status: 401, description: 'Não autorizado' })
@@ -91,8 +83,6 @@ export class CategoryController {
 
   @Delete(':id')
   @HttpCode(204)
-  @Roles(UserRoleEnum.ADMIN)
-  @UseGuards(RoleGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Deleta uma categoria' })
   @ApiResponse({ status: 401, description: 'Não autorizado' })

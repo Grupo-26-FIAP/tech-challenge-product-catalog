@@ -4,12 +4,10 @@ import {
   DeleteDateColumn,
   Entity,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { CategoryModel } from './category.model';
-import { ProductOrderModel } from './product-order.model';
 
 @Entity({
   name: 'product',
@@ -77,7 +75,4 @@ export class ProductModel {
     comment: 'Data da exclusão do produto (soft delete)',
   })
   deletedAt?: Date;
-
-  @OneToMany(() => ProductOrderModel, (productOrder) => productOrder.product)
-  productOrders: ProductOrderModel[];
 }
