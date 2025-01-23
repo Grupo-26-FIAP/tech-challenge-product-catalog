@@ -350,8 +350,8 @@ erDiagram
 1. **Clone o repositório** (se ainda não o fez):
 
 ```bash
-git clone https://github.com/diname/tech-challenge-fiap
-cd tech-challenge-fiap
+git clone https://github.com/Grupo-26-FIAP/tech-challenge-product-catalog
+cd tech-challenge-product-catalog
 ```
 
 ### Utilizando Docker
@@ -379,7 +379,7 @@ Após iniciar os contêineres, o Swagger estará acessível em [http://localhost
 
 > ⚠️ **Atenção**
 >
-> [Instruções de fluxo](https://github.com/diname/tech-challenge-fiap/wiki/Fluxo-de-teste)
+> [Instruções de fluxo](https://github.com/Grupo-26-FIAP/tech-challenge-product-catalog/wiki/Fluxo-de-teste)
 
 ## Contato (Grupo)
 
