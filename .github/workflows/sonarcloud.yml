@@ -1,10 +1,7 @@
 name: SonarQube (CI)
 on:
-  push:
-    branches:
-      - main
-  #pull_request:
-  #types: [opened, synchronize, reopened]
+  pull_request:
+    types: [opened, synchronize, reopened]
 jobs:
   sonarqube:
     name: SonarQube
@@ -15,10 +12,25 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/hydrogen
+          cache: 'npm'
       - name: Install dependencies
-        run: yarn
-      - name: Test and coverage
-        run: yarn jest --coverage
+        run: npm ci
+
+      - name: Build the project
+        run: npm run build
+
+      - name: Lint the code
+        run: npm run lint
+
+      - name: Run tests with coverage
+        run: npm run test:cov
+        env:
+          CI: true
+
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v4
         env:
