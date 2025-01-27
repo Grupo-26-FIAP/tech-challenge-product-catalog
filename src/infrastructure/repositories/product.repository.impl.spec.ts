@@ -5,7 +5,7 @@ import { CategoryModel } from '@Infrastructure/typeorm/models/category.model';
 import { ProductModel } from '@Infrastructure/typeorm/models/product.model';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { ProductRepositoryImpl } from './product.repository.impl';
 
 describe('ProductRepositoryImpl', () => {
@@ -80,48 +80,53 @@ describe('ProductRepositoryImpl', () => {
     );
   });
 
-  // it('should find products successfully', async () => {
-  //   const productModels: ProductModel[] = [
-  //     {
-  //       id: 1,
-  //       name: 'Test Product',
-  //       createdAt: new Date(),
-  //       category: { id: 1 } as CategoryModel,
-  //       description: 'Test Description',
-  //       enabled: true,
-  //       price: 10,
-  //       figureUrl: 'http://test.com',
-  //       preparationTime: 10,
-  //     },
-  //   ];
-  //   const productEntities: ProductEntity[] = [
-  //     {
-  //       id: 1,
-  //       name: 'Test Product',
-  //       description: 'Test Description',
-  //       enabled: true,
-  //       price: 10,
-  //       figureUrl: 'http://test.com',
-  //       preparationTime: 10,
-  //       category: { id: 1 } as CategoryEntity,
-  //     },
-  //   ];
+  it('should find products successfully', async () => {
+    const productModels: ProductModel[] = [
+      {
+        id: 1,
+        name: 'Test Product',
+        createdAt: new Date(),
+        category: { id: 1 } as CategoryModel,
+        description: 'Test Description',
+        enabled: true,
+        price: 10,
+        figureUrl: 'http://test.com',
+        preparationTime: 10,
+      },
+    ];
+    const productEntities: ProductEntity[] = [
+      {
+        id: 1,
+        name: 'Test Product',
+        description: 'Test Description',
+        enabled: true,
+        price: 10,
+        figureUrl: 'http://test.com',
+        preparationTime: 10,
+        category: { id: 1 } as CategoryEntity,
+      },
+    ];
 
-  //   jest.spyOn(repository, 'find').mockResolvedValue(productModels);
-  //   jest
-  //     .spyOn(ProductMapper, 'toEntity')
-  //     .mockImplementation((model) =>
-  //       productEntities.find((entity) => entity.id === model.id),
-  //     );
+    jest.spyOn(repository, 'find').mockResolvedValue(productModels);
+    jest
+      .spyOn(ProductMapper, 'toEntity')
+      .mockImplementation((model) =>
+        productEntities.find((entity) => entity.id === model.id),
+      );
 
-  //   const result = await productRepository.find('Test Product', 1);
+    const result = await productRepository.find('Test Product', 1);
 
-  //   expect(result).toEqual(productEntities);
-  //   expect(repository.find).toHaveBeenCalledWith({
-  //     where: { name: ILike('%Test Product%') },
-  //     relations: ['category'],
-  //   });
-  // });
+    expect(result).toEqual(productEntities);
+    expect(repository.find).toHaveBeenCalledWith({
+      where: {
+        name: ILike('%Test Product%'),
+        category: { id: 1 },
+      },
+      relations: ['category'],
+      order: { price: 'DESC' },
+      loadEagerRelations: true,
+    });
+  });
 
   it('should handle errors when finding products', async () => {
     jest
