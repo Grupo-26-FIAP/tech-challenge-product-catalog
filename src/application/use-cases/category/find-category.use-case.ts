@@ -12,7 +12,7 @@ export class FindCategoryUseCase {
   constructor(
     @Inject(ICategoryServiceSymbol)
     private readonly categoryService: ICategoryService,
-    @Inject(CACHE_MANAGER) private cacheService: Cache,
+    @Inject(CACHE_MANAGER) private readonly cacheService: Cache,
   ) {}
 
   async execute(): Promise<CategoryResponseDto[]> {
