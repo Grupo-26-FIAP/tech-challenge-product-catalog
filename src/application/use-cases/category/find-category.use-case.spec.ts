@@ -9,7 +9,8 @@ import { FindCategoryUseCase } from './find-category.use-case';
 
 describe('FindCategoryUseCase', () => {
   let findCategoryUseCase: FindCategoryUseCase;
-  let categoryService: ICategoryService;
+  let categoryService: jest.Mocked<ICategoryService>;
+  let cacheManager: jest.Mocked<any>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -35,7 +36,10 @@ describe('FindCategoryUseCase', () => {
     }).compile();
 
     findCategoryUseCase = module.get<FindCategoryUseCase>(FindCategoryUseCase);
-    categoryService = module.get<ICategoryService>(ICategoryServiceSymbol);
+    categoryService = module.get<ICategoryService>(
+      ICategoryServiceSymbol,
+    ) as jest.Mocked<ICategoryService>;
+    cacheManager = module.get(CACHE_MANAGER) as jest.Mocked<any>;
   });
 
   it('should be defined', () => {
@@ -45,9 +49,7 @@ describe('FindCategoryUseCase', () => {
   it('should find a category successfully', async () => {
     const categoryEntity: CategoryEntity = { id: 1, name: 'Test Category' };
 
-    jest
-      .spyOn(categoryService, 'findCategories')
-      .mockResolvedValue([categoryEntity]);
+    categoryService.findCategories.mockResolvedValue([categoryEntity]);
 
     const result = await findCategoryUseCase.execute();
 
@@ -57,7 +59,7 @@ describe('FindCategoryUseCase', () => {
 
   it('should handle errors when finding a category', async () => {
     const error = new Error('Error finding category');
-    jest.spyOn(categoryService, 'findCategories').mockRejectedValue(error);
+    categoryService.findCategories.mockRejectedValue(error);
 
     await expect(findCategoryUseCase.execute()).rejects.toThrow(error);
   });
@@ -65,7 +67,7 @@ describe('FindCategoryUseCase', () => {
   it('should create a category successfully', async () => {
     const categoryEntity: CategoryEntity = { id: 1, name: 'New Category' };
 
-    jest.spyOn(categoryService, 'createCategory').mockResolvedValue();
+    categoryService.createCategory.mockResolvedValue();
 
     await expect(
       categoryService.createCategory(categoryEntity),
@@ -77,7 +79,7 @@ describe('FindCategoryUseCase', () => {
     const categoryEntity: CategoryEntity = { id: 1, name: 'New Category' };
     const error = new Error('Error creating category');
 
-    jest.spyOn(categoryService, 'createCategory').mockRejectedValue(error);
+    categoryService.createCategory.mockRejectedValue(error);
 
     await expect(
       categoryService.createCategory(categoryEntity),
@@ -87,7 +89,7 @@ describe('FindCategoryUseCase', () => {
   it('should update a category successfully', async () => {
     const categoryEntity: CategoryEntity = { id: 1, name: 'Updated Category' };
 
-    jest.spyOn(categoryService, 'updateCategory').mockResolvedValue();
+    categoryService.updateCategory.mockResolvedValue();
 
     await expect(
       categoryService.updateCategory(1, categoryEntity),
@@ -102,7 +104,7 @@ describe('FindCategoryUseCase', () => {
     const categoryEntity: CategoryEntity = { id: 1, name: 'Updated Category' };
     const error = new Error('Error updating category');
 
-    jest.spyOn(categoryService, 'updateCategory').mockRejectedValue(error);
+    categoryService.updateCategory.mockRejectedValue(error);
 
     await expect(
       categoryService.updateCategory(1, categoryEntity),
@@ -112,7 +114,7 @@ describe('FindCategoryUseCase', () => {
   it('should delete a category successfully', async () => {
     const categoryId = 1;
 
-    jest.spyOn(categoryService, 'deleteCategory').mockResolvedValue();
+    categoryService.deleteCategory.mockResolvedValue();
 
     await expect(
       categoryService.deleteCategory(categoryId),
@@ -124,7 +126,7 @@ describe('FindCategoryUseCase', () => {
     const categoryId = 1;
     const error = new Error('Error deleting category');
 
-    jest.spyOn(categoryService, 'deleteCategory').mockRejectedValue(error);
+    categoryService.deleteCategory.mockRejectedValue(error);
 
     await expect(categoryService.deleteCategory(categoryId)).rejects.toThrow(
       error,
@@ -134,13 +136,20 @@ describe('FindCategoryUseCase', () => {
   it('should find a category from cache successfully', async () => {
     const categoryEntity: CategoryEntity = { id: 1, name: 'Test Category' };
 
-    jest
-      .spyOn(categoryService, 'findCategories')
-      .mockResolvedValue([categoryEntity]);
+    cacheManager.get.mockResolvedValue(JSON.stringify([categoryEntity]));
+    categoryService.findCategories.mockResolvedValue([categoryEntity]);
 
     const result = await findCategoryUseCase.execute();
 
     expect(result).toEqual([categoryEntity]);
-    expect(categoryService.findCategories).toHaveBeenCalledWith();
+    expect(cacheManager.get).toHaveBeenCalled();
+    expect(categoryService.findCategories).not.toHaveBeenCalled();
+  });
+
+  it('should handle errors when finding a category from cache', async () => {
+    const error = new Error('Error finding category from cache');
+    cacheManager.get.mockRejectedValue(error);
+
+    await expect(findCategoryUseCase.execute()).rejects.toThrow(error);
   });
 });
