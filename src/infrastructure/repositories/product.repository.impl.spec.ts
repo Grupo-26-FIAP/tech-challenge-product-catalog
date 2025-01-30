@@ -16,10 +16,7 @@ describe('ProductRepositoryImpl', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ProductRepositoryImpl,
-        {
-          provide: getRepositoryToken(ProductModel),
-          useClass: Repository,
-        },
+        { provide: getRepositoryToken(ProductModel), useClass: Repository },
       ],
     }).compile();
 
@@ -31,8 +28,56 @@ describe('ProductRepositoryImpl', () => {
     );
   });
 
-  it('should be defined', () => {
-    expect(productRepository).toBeDefined();
+  it('should save a product successfully', async () => {
+    const productEntity: ProductEntity = {
+      id: 1,
+      name: 'Test Product',
+      description: 'Test Description',
+      enabled: true,
+      price: 10,
+      figureUrl: 'http://test.com',
+      preparationTime: 10,
+      category: { id: 1 } as CategoryEntity,
+    };
+    const productModel: ProductModel = {
+      id: 1,
+      name: 'Test Product',
+      createdAt: new Date(),
+      category: { id: 1 } as CategoryModel,
+      description: 'Test Description',
+      enabled: true,
+      price: 10,
+      figureUrl: 'http://test.com',
+      preparationTime: 10,
+    };
+
+    jest.spyOn(ProductMapper, 'toModel').mockReturnValue(productModel);
+    jest.spyOn(repository, 'save').mockResolvedValue(productModel);
+
+    await productRepository.save(productEntity);
+
+    expect(repository.save).toHaveBeenCalledWith(productModel);
+  });
+
+  it('should handle errors when saving a product', async () => {
+    const productEntity: ProductEntity = {
+      id: 1,
+      name: 'Test Product',
+      description: 'Test Description',
+      enabled: true,
+      price: 10,
+      figureUrl: 'http://test.com',
+      preparationTime: 10,
+      category: { id: 1 } as CategoryEntity,
+    };
+
+    jest
+      .spyOn(repository, 'save')
+      .mockRejectedValue(new Error('Error saving product'));
+
+    await expect(productRepository.save(productEntity)).rejects.toThrow(
+      'Error saving product',
+    );
   });
 
   it('should find a product by id successfully', async () => {
@@ -58,7 +103,7 @@ describe('ProductRepositoryImpl', () => {
       category: { id: 1 } as CategoryEntity,
     };
 
-    jest.spyOn(repository, 'findOne').mockResolvedValue(productModel);
+    jest.spyOn(repository, 'findOne').mockResolvedValueOnce(productModel);
     jest.spyOn(ProductMapper, 'toEntity').mockReturnValue(productEntity);
 
     const result = await productRepository.findById(1);
@@ -70,6 +115,23 @@ describe('ProductRepositoryImpl', () => {
     });
   });
 
+  it('should handle undefined return when finding products', async () => {
+    jest.spyOn(repository, 'find').mockResolvedValue([]);
+
+    const result = await productRepository.find('Nonexistent Product', 1);
+
+    expect(result).toEqual([]);
+    expect(repository.find).toHaveBeenCalledWith({
+      where: {
+        name: ILike('%Nonexistent Product%'),
+        category: { id: 1 },
+      },
+      relations: ['category'],
+      order: { price: 'DESC' },
+      loadEagerRelations: true,
+    });
+  });
+
   it('should handle errors when finding a product by id', async () => {
     jest
       .spyOn(repository, 'findOne')
@@ -78,6 +140,30 @@ describe('ProductRepositoryImpl', () => {
     await expect(productRepository.findById(1)).rejects.toThrow(
       'Error finding product',
     );
+  });
+
+  it('should return undefined when product is not found by id', async () => {
+    jest.spyOn(repository, 'findOne').mockResolvedValueOnce(null);
+    jest.spyOn(ProductMapper, 'toEntity').mockImplementation((model) => {
+      if (!model) return undefined;
+      return {
+        id: model.id,
+        name: model.name,
+        description: model.description,
+        enabled: model.enabled,
+        price: model.price,
+        figureUrl: model.figureUrl,
+        preparationTime: model.preparationTime,
+        category: { id: model.category.id } as CategoryEntity,
+      };
+    });
+
+    const result = await productRepository.findById(1);
+    expect(result).toBeUndefined();
+    expect(repository.findOne).toHaveBeenCalledWith({
+      where: { id: 1 },
+      relations: ['category'],
+    });
   });
 
   it('should find products successfully', async () => {
@@ -138,56 +224,21 @@ describe('ProductRepositoryImpl', () => {
     );
   });
 
-  it('should save a product successfully', async () => {
-    const productEntity: ProductEntity = {
-      id: 1,
-      name: 'Test Product',
-      description: 'Test Description',
-      enabled: true,
-      price: 10,
-      figureUrl: 'http://test.com',
-      preparationTime: 10,
-      category: { id: 1 } as CategoryEntity,
-    };
-    const productModel: ProductModel = {
-      id: 1,
-      name: 'Test Product',
-      createdAt: new Date(),
-      category: { id: 1 } as CategoryModel,
-      description: 'Test Description',
-      enabled: true,
-      price: 10,
-      figureUrl: 'http://test.com',
-      preparationTime: 10,
-    };
+  it('should return an empty array when no products are found', async () => {
+    jest.spyOn(repository, 'find').mockResolvedValue([]);
 
-    jest.spyOn(ProductMapper, 'toModel').mockReturnValue(productModel);
-    jest.spyOn(repository, 'save').mockResolvedValue(productModel);
+    const result = await productRepository.find('Nonexistent Product', 1);
 
-    await productRepository.save(productEntity);
-
-    expect(repository.save).toHaveBeenCalledWith(productModel);
-  });
-
-  it('should handle errors when saving a product', async () => {
-    const productEntity: ProductEntity = {
-      id: 1,
-      name: 'Test Product',
-      description: 'Test Description',
-      enabled: true,
-      price: 10,
-      figureUrl: 'http://test.com',
-      preparationTime: 10,
-      category: { id: 1 } as CategoryEntity,
-    };
-
-    jest
-      .spyOn(repository, 'save')
-      .mockRejectedValue(new Error('Error saving product'));
-
-    await expect(productRepository.save(productEntity)).rejects.toThrow(
-      'Error saving product',
-    );
+    expect(result).toEqual([]);
+    expect(repository.find).toHaveBeenCalledWith({
+      where: {
+        name: ILike('%Nonexistent Product%'),
+        category: { id: 1 },
+      },
+      relations: ['category'],
+      order: { price: 'DESC' },
+      loadEagerRelations: true,
+    });
   });
 
   it('should update a product successfully', async () => {
@@ -258,5 +309,74 @@ describe('ProductRepositoryImpl', () => {
     await expect(productRepository.delete(1)).rejects.toThrow(
       'Error deleting product',
     );
+  });
+
+  it('should handle validation errors when saving a product', async () => {
+    const productEntity: ProductEntity = {
+      id: 1,
+      name: 'Invalid Product',
+      description: 'Invalid Description',
+      enabled: true,
+      price: -10, // Invalid price
+      figureUrl: 'http://test.com',
+      preparationTime: 10,
+      category: { id: 1 } as CategoryEntity,
+    };
+
+    jest
+      .spyOn(repository, 'save')
+      .mockRejectedValue(new Error('Validation error'));
+
+    await expect(productRepository.save(productEntity)).rejects.toThrow(
+      'Validation error',
+    );
+  });
+
+  it('should handle undefined name when finding products', async () => {
+    const productModels: ProductModel[] = [
+      {
+        id: 1,
+        name: 'Test Product',
+        createdAt: new Date(),
+        category: { id: 1 } as CategoryModel,
+        description: 'Test Description',
+        enabled: true,
+        price: 10,
+        figureUrl: 'http://test.com',
+        preparationTime: 10,
+      },
+    ];
+    const productEntities: ProductEntity[] = [
+      {
+        id: 1,
+        name: 'Test Product',
+        description: 'Test Description',
+        enabled: true,
+        price: 10,
+        figureUrl: 'http://test.com',
+        preparationTime: 10,
+        category: { id: 1 } as CategoryEntity,
+      },
+    ];
+
+    jest.spyOn(repository, 'find').mockResolvedValue(productModels);
+    jest
+      .spyOn(ProductMapper, 'toEntity')
+      .mockImplementation((model) =>
+        productEntities.find((entity) => entity.id === model.id),
+      );
+
+    const result = await productRepository.find(undefined, 1);
+
+    expect(result).toEqual(productEntities);
+    expect(repository.find).toHaveBeenCalledWith({
+      where: {
+        name: undefined,
+        category: { id: 1 },
+      },
+      relations: ['category'],
+      order: { price: 'DESC' },
+      loadEagerRelations: true,
+    });
   });
 });
