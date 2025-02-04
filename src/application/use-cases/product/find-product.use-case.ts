@@ -13,7 +13,7 @@ export class FindProductUseCase {
   constructor(
     @Inject(IProductServiceSymbol)
     private readonly productService: IProductService,
-    @Inject(CACHE_MANAGER) private cacheService: Cache,
+    @Inject(CACHE_MANAGER) private readonly cacheService: Cache,
   ) {}
 
   async execute(
