@@ -65,7 +65,7 @@ describe('CategoryRepositoryImpl', () => {
 
     jest.spyOn(CategoryMapper, 'toModel').mockReturnValue(categoryModel);
     jest.spyOn(repository, 'save').mockResolvedValue(categoryModel);
-
+    //test
     await categoryRepository.save(categoryEntity);
 
     expect(repository.save).toHaveBeenCalledWith(categoryModel);
