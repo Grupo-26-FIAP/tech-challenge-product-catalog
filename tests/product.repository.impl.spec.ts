@@ -1,12 +1,12 @@
 import { CategoryEntity } from '@Domain/entities/category.entity';
 import { ProductEntity } from '@Domain/entities/product.entity';
+import { ProductRepositoryImpl } from '@Infrastructure/repositories/product.repository.impl';
 import { ProductMapper } from '@Infrastructure/typeorm/mappers/product.mapper';
 import { CategoryModel } from '@Infrastructure/typeorm/models/category.model';
 import { ProductModel } from '@Infrastructure/typeorm/models/product.model';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ILike, Repository } from 'typeorm';
-import { ProductRepositoryImpl } from './product.repository.impl';
 
 describe('ProductRepositoryImpl', () => {
   let productRepository: ProductRepositoryImpl;

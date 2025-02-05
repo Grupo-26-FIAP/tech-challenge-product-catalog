@@ -8,7 +8,7 @@ import {
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Cache } from 'cache-manager';
-import { FindProductUseCase } from './find-product.use-case';
+import { FindProductUseCase } from '../src/application/use-cases/product/find-product.use-case';
 
 describe('FindProductUseCase', () => {
   let findProductUseCase: FindProductUseCase;

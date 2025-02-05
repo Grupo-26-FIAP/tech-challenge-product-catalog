@@ -1,10 +1,10 @@
 import { CategoryEntity } from '@Domain/entities/category.entity';
+import { CategoryRepositoryImpl } from '@Infrastructure/repositories/category.repository.impl';
 import { CategoryMapper } from '@Infrastructure/typeorm/mappers/category.mapper';
+import { CategoryModel } from '@Infrastructure/typeorm/models/category.model';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CategoryModel } from '../typeorm/models/category.model';
-import { CategoryRepositoryImpl } from './category.repository.impl';
 
 describe('CategoryRepositoryImpl', () => {
   let categoryRepository: CategoryRepositoryImpl;

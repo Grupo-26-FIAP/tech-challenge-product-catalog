@@ -1,11 +1,11 @@
 import { CategoryEntity } from '@Domain/entities/category.entity';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ProductEntity } from '../../entities/product.entity';
+import { ProductEntity } from '../src/domain/entities/product.entity';
 import {
   IProductRepository,
   IProductRepositorySymbol,
-} from '../../repositories/product.repository';
-import { ProductServiceImpl } from './product.serviceImpl';
+} from '../src/domain/repositories/product.repository';
+import { ProductServiceImpl } from '../src/domain/services/product/product.serviceImpl';
 
 describe('ProductServiceImpl', () => {
   let service: ProductServiceImpl;

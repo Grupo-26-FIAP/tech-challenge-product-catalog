@@ -3,7 +3,7 @@ import {
   ICategoryServiceSymbol,
 } from '@Domain/services/category/category.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { DeleteCategoryUseCase } from './delete-category.use-case';
+import { DeleteCategoryUseCase } from '../src/application/use-cases/category/delete-category.use-case';
 
 describe('DeleteCategoryUseCase', () => {
   let deleteCategoryUseCase: DeleteCategoryUseCase;

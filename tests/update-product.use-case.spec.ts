@@ -3,9 +3,9 @@ import {
   IProductServiceSymbol,
 } from '@Domain/services/product/product.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ProductUpdateRequestDto } from '../../dtos/request/product/product.request.dto';
-import { ProductMapper } from '../../mappers/product.mapper';
-import { UpdateProductUseCase } from './update-product.use-case';
+import { ProductUpdateRequestDto } from '../src/application/dtos/request/product/product.request.dto';
+import { ProductMapper } from '../src/application/mappers/product.mapper';
+import { UpdateProductUseCase } from '../src/application/use-cases/product/update-product.use-case';
 
 describe('UpdateProductUseCase', () => {
   let updateProductUseCase: UpdateProductUseCase;

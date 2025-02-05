@@ -3,9 +3,9 @@ import {
   ICategoryServiceSymbol,
 } from '@Domain/services/category/category.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoryRequestDto } from '../../dtos/request/category/category.request.dto';
-import { CategoryMapper } from '../../mappers/category.mapper';
-import { CreateCategoryUseCase } from './create-category.use-case';
+import { CategoryRequestDto } from '../src/application/dtos/request/category/category.request.dto';
+import { CategoryMapper } from '../src/application/mappers/category.mapper';
+import { CreateCategoryUseCase } from '../src/application/use-cases/category/create-category.use-case';
 
 describe('CreateCategoryUseCase', () => {
   let createCategoryUseCase: CreateCategoryUseCase;

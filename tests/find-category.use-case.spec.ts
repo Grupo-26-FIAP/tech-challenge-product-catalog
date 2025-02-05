@@ -5,7 +5,7 @@ import {
 } from '@Domain/services/category/category.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Test, TestingModule } from '@nestjs/testing';
-import { FindCategoryUseCase } from './find-category.use-case';
+import { FindCategoryUseCase } from '../src/application/use-cases/category/find-category.use-case';
 
 describe('FindCategoryUseCase', () => {
   let findCategoryUseCase: FindCategoryUseCase;

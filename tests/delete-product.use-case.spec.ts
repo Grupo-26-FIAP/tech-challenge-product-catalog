@@ -3,7 +3,7 @@ import {
   IProductServiceSymbol,
 } from '@Domain/services/product/product.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { DeleteProductUseCase } from './delete-product.use-case';
+import { DeleteProductUseCase } from '../src/application/use-cases/product/delete-product.use-case';
 
 describe('DeleteProductUseCase', () => {
   let deleteProductUseCase: DeleteProductUseCase;

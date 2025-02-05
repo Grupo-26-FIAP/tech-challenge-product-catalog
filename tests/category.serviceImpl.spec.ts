@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoryEntity } from '../../entities/category.entity';
+import { CategoryEntity } from '../src/domain/entities/category.entity';
 import {
   ICategoryRepository,
   ICategoryRepositorySymbol,
-} from '../../repositories/category.repository';
-import { CategoryServiceImpl } from './category.serviceImpl';
+} from '../src/domain/repositories/category.repository';
+import { CategoryServiceImpl } from '../src/domain/services/category/category.serviceImpl';
 
 describe('CategoryServiceImpl', () => {
   let service: CategoryServiceImpl;

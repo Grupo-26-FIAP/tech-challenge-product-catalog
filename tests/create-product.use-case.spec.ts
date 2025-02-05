@@ -4,10 +4,10 @@ import {
   IProductServiceSymbol,
 } from '@Domain/services/product/product.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ProductRequestDto } from '../../dtos/request/product/product.request.dto';
-import { ProductResponseDto } from '../../dtos/response/product/product.response.dto';
-import { ProductMapper } from '../../mappers/product.mapper';
-import { CreateProductUseCase } from './create-product.use-case';
+import { ProductRequestDto } from '../src/application/dtos/request/product/product.request.dto';
+import { ProductResponseDto } from '../src/application/dtos/response/product/product.response.dto';
+import { ProductMapper } from '../src/application/mappers/product.mapper';
+import { CreateProductUseCase } from '../src/application/use-cases/product/create-product.use-case';
 
 describe('CreateProductUseCase', () => {
   let createProductUseCase: CreateProductUseCase;
