@@ -13,10 +13,10 @@ spec:
       labels:
         app: redis
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: redis
           image: redis:latest
-          automountServiceAccountToken: false
           resources:
             requests:
               memory: "64Mi"
