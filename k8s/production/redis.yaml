@@ -4,7 +4,6 @@ metadata:
   name: redis
   namespace: default
 spec:
-  automountServiceAccountToken: false 
   replicas: 1
   selector:
     matchLabels:
@@ -17,6 +16,7 @@ spec:
       containers:
         - name: redis
           image: redis:latest
+          automountServiceAccountToken: false
           resources:
             requests:
               memory: "64Mi"
