@@ -1,3 +1,9 @@
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Grupo-26-FIAP_tech-challenge-product-catalog&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Grupo-26-FIAP_tech-challenge-product-catalog)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Grupo-26-FIAP_tech-challenge-product-catalog&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Grupo-26-FIAP_tech-challenge-product-catalog)
+
+
+
 # Tech Challenge (Software Architecture)
 
 Tech Challenge é o projeto do MBA em Software Architecture que engloba os conhecimentos obtidos nas disciplinas.
