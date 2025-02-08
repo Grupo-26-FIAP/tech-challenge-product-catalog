@@ -7,7 +7,7 @@ import { ProductSeeder } from '@Infrastructure/typeorm/seed/product.seeder';
 import { SeederProvider } from '@Infrastructure/typeorm/seed/seeder.provider';
 import { HttpModule } from '@nestjs/axios';
 import { CacheModule, CacheStore } from '@nestjs/cache-manager';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { TerminusModule } from '@nestjs/terminus';
@@ -33,6 +33,7 @@ import { ProductRepositoryImpl } from './infrastructure/repositories/product.rep
 import { CategoryController } from './presentation/controllers/category.controller';
 import { HealthController } from './presentation/controllers/health.controller';
 import { ProductController } from './presentation/controllers/product.controller';
+import { ResponseMiddleware } from '@Shared/middlewares/response.middleware';
 
 @Module({
   imports: [
@@ -96,4 +97,8 @@ import { ProductController } from './presentation/controllers/product.controller
   ],
   controllers: [ProductController, CategoryController, HealthController],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(ResponseMiddleware).forRoutes('*'); // Apply the middleware to all routes
+  }
+}

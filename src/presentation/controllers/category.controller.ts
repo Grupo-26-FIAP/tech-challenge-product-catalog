@@ -25,7 +25,7 @@ import { DeleteCategoryUseCase } from '@Application/use-cases/category/delete-ca
 import { FindCategoryUseCase } from '@Application/use-cases/category/find-category.use-case';
 import { UpdateCategoryUseCase } from '@Application/use-cases/category/update-category.use-case';
 
-@Controller('/api/categories')
+@Controller('/categories')
 @ApiTags('Categories')
 export class CategoryController {
   constructor(

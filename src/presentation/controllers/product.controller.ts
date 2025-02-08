@@ -26,7 +26,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-@Controller('/api/products')
+@Controller('/products')
 @ApiTags('Products')
 export class ProductController {
   constructor(
