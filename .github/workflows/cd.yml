@@ -62,8 +62,8 @@ jobs:
             --from-literal=POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
             --from-literal=POSTGRES_PORT=${{ secrets.POSTGRES_PORT }} \
             --from-literal=POSTGRES_HOST=${{ secrets.POSTGRES_HOST }} \
-            --from-literal=CACHE_SERVICE_HOST=${{ env.CACHE_SERVICE_HOST }} \
-            --from-literal=CACHE_SERVICE_PORT=${{ env.CACHE_SERVICE_PORT }} \
+            --from-literal=CACHE_SERVICE_HOST=${{ vars.CACHE_SERVICE_HOST }} \
+            --from-literal=CACHE_SERVICE_PORT=${{ vars.CACHE_SERVICE_PORT }} \
 
       - name: Kube Apply
         run: |
