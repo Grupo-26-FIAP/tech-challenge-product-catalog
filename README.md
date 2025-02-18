@@ -3,6 +3,8 @@
 ![Badge](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow)
 ![Badge](https://img.shields.io/badge/Contributors-Grupo%2026-blue)
 ![Badge](https://img.shields.io/badge/License-MIT-green)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Grupo-26-FIAP_tech-challenge-product-catalog&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Grupo-26-FIAP_tech-challenge-product-catalog)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Grupo-26-FIAP_tech-challenge-product-catalog&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Grupo-26-FIAP_tech-challenge-product-catalog)
 
 Bem-vindo ao repositório do **Tech Challenge - Catálogo de Produtos**! Este projeto faz parte do ecossistema desenvolvido pelo Grupo 26 da FIAP, sendo responsável pela gestão de produtos dentro da plataforma.
 
